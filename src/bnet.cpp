@@ -1322,7 +1322,7 @@ void CBNET::ProcessChatEvent(const CIncomingChatEvent* chatEvent)
 
           case HashCode("map"):
           {
-            if (Payload.empty())
+            if (Payload.empty() || m_Aura->m_CurrentGame)
               break;
             else
             {
@@ -1379,7 +1379,7 @@ void CBNET::ProcessChatEvent(const CIncomingChatEvent* chatEvent)
 
           case HashCode("load"):
           {
-            if (Payload.empty())
+            if (Payload.empty() || m_Aura->m_CurrentGame)
               break;
             else
             {
