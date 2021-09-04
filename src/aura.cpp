@@ -844,7 +844,7 @@ void CAura::CreateGame(CMap* map, uint8_t gameState, string gameName, string own
     return;
   }
 
-  //Print2("[AURA] creating game [" + gameName + "]");
+  Print2("[AURA] creating game [" + gameName + "]");
 
   m_CurrentGame = new CGame(this, map, m_HostPort, gameState, gameName, ownerName, creatorName, creatorServer);
 
