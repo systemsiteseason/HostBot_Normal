@@ -616,7 +616,7 @@ bool CGame::Update(void* fd, void* send_fd)
       // don't queue a game refresh message if the queue contains more than 1 packet because they're very low priority
 
       if (bnet->GetOutPacketsQueued() <= 1)
-        bnet->QueueGameRefresh(m_GameState, m_GameName, m_Map, m_HostCounter);
+        bnet->QueueGameRefresh(m_GameState, m_GameName + "(" + to_string(MAX_SLOTS - GetSlotsOpen()) + "/" + to_string(MAX_SLOTS) + ")", m_Map, m_HostCounter);
     }
 
     m_LastRefreshTime = Time;
