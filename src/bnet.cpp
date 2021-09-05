@@ -1831,7 +1831,7 @@ void CBNET::QueueGameRefresh(uint8_t state, const string& gameName, CMap* map, u
     MapHeight.push_back(192);
     MapHeight.push_back(7);
 
-    m_OutPackets.push(m_Protocol->SEND_SID_STARTADVEX3(state, CreateByteArray(MapGameType, false), map->GetMapGameFlags(), MapWidth, MapHeight, gameName, m_UserName, 0, map->GetMapPath(), map->GetMapCRC(), map->GetMapSHA1(), ((hostCounter & 0x0FFFFFFF) | (m_HostCounterID << 28))));
+    m_OutPackets.push(m_Protocol->SEND_SID_STARTADVEX3(state, CreateByteArray(MapGameType, false), map->GetMapGameFlags(), MapWidth, MapHeight, gameName + "(" + to_string(MAX_SLOTS - m_Aura->m_CurrentGame->GetSlotsOpen()) + "/" + to_string(MAX_SLOTS) + ")", m_UserName, 0, map->GetMapPath(), map->GetMapCRC(), map->GetMapSHA1(), ((hostCounter & 0x0FFFFFFF) | (m_HostCounterID << 28))));
   }
 }
 
