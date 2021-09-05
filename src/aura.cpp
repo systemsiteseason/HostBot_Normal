@@ -662,6 +662,7 @@ void CAura::SetConfigs(CConfig* CFG)
   m_LCPings            = CFG->GetInt("bot_lcpings", 1) == 0 ? false : true;
   m_AutoKickPing       = CFG->GetInt("bot_autokickping", 300);
   m_LobbyTimeLimit     = CFG->GetInt("bot_lobbytimelimit", 2);
+  m_GameTimeLimit     = CFG->GetInt("bot_gametimelimit", 10);
   m_Latency            = CFG->GetInt("bot_latency", 100);
   m_SyncLimit          = CFG->GetInt("bot_synclimit", 50);
   m_VoteKickPercentage = CFG->GetInt("bot_votekickpercentage", 70);

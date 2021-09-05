@@ -71,6 +71,7 @@ CGame::CGame(CAura* nAura, CMap* nMap, uint16_t nHostPort, uint8_t nGameState, s
     m_StartedLaggingTime(0),
     m_LastLagScreenTime(0),
     m_LastReservedSeen(GetTime()),
+    m_AFKDetect(GetTime()),
     m_StartedKickVoteTime(0),
     m_GameOverTime(0),
     m_LastPlayerLeaveTicks(0),
@@ -345,7 +346,7 @@ bool CGame::Update(void* fd, void* send_fd)
       // note: the PrivateGame flag is not set when broadcasting to LAN (as you might expect)
       // note: we do not use m_Map->GetMapGameType because none of the filters are set when broadcasting to LAN (also as you might expect)
 
-      m_Aura->m_UDPSocket->Broadcast(6112, m_Protocol->SEND_W3GS_GAMEINFO(m_Aura->m_LANWar3Version, CreateByteArray(static_cast<uint32_t>(MAPGAMETYPE_UNKNOWN0), false), m_Map->GetMapGameFlags(), m_Map->GetMapWidth(), m_Map->GetMapHeight(), m_GameName, "Clan 007", 0, m_Map->GetMapPath(), m_Map->GetMapCRC(), MAX_SLOTS, MAX_SLOTS, m_HostPort, m_HostCounter & 0x0FFFFFFF, m_EntryKey));
+      m_Aura->m_UDPSocket->Broadcast(6112, m_Protocol->SEND_W3GS_GAMEINFO(m_Aura->m_LANWar3Version, CreateByteArray(static_cast<uint32_t>(MAPGAMETYPE_UNKNOWN0), false), m_Map->GetMapGameFlags(), m_Map->GetMapWidth(), m_Map->GetMapHeight(), m_GameName + "[" + to_string(MAX_SLOTS - GetSlotsOpen()) + "/" +  to_string(MAX_SLOTS) + "]", "Clan 007", 0, m_Map->GetMapPath(), m_Map->GetMapCRC(), MAX_SLOTS, MAX_SLOTS, m_HostPort, m_HostCounter & 0x0FFFFFFF, m_EntryKey));
     }
 
     m_LastPingTime = Time;
@@ -728,6 +729,20 @@ bool CGame::Update(void* fd, void* send_fd)
     if (Time - m_LastReservedSeen > static_cast<int64_t>(m_Aura->m_LobbyTimeLimit * 60))
     {
       Print("[GAME: " + m_GameName + "] is over (lobby time limit hit)");
+      return true;
+    }
+  }
+
+
+  // check if host owner AFK
+
+  if(!m_GameLoading && !m_GameLoaded && m_Aura->m_GameTimeLimit > 0)
+  {
+   // check if we've hit the time limit
+
+    if (Time - m_AFKDetect > static_cast<int64_t>(m_Aura->m_GameTimeLimit * 60))
+    {
+      Print("[GAME: " + m_GameName + "] is over (game time limit hit)");
       return true;
     }
   }
