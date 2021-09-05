@@ -870,7 +870,7 @@ void CAura::CreateGame(CMap* map, uint8_t gameState, string gameName, string own
         bnet->QueueChatCommand("Creating public game [" + gameName + "] started by [" + ownerName + "]");
     }
 
-    bnet->QueueGameCreate(gameState, gameName, map, m_CurrentGame->GetHostCounter());
+    bnet->QueueGameCreate(gameState, gameName + "(" + to_string(MAX_SLOTS - m_CurrentGame->GetSlotsOpen()) + "/" + to_string(MAX_SLOTS) + ")", map, m_CurrentGame->GetHostCounter());
 
     // hold friends and/or clan members
 
