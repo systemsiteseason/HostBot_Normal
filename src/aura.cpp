@@ -437,7 +437,7 @@ bool CAura::Update()
   {
     if ((*i)->Update(&fd, &send_fd))
     {
-      //Print2("[AURA] deleting game [" + (*i)->GetGameName() + "]");
+      Print2("[AURA] deleting game [" + (*i)->GetGameName() + "]");
       EventGameDeleted(*i);
       delete *i;
       i = m_Games.erase(i);
@@ -455,7 +455,7 @@ bool CAura::Update()
   {
     if (m_CurrentGame->Update(&fd, &send_fd))
     {
-      //Print2("[AURA] deleting current game [" + m_CurrentGame->GetGameName() + "]");
+      Print2("[AURA] deleting current game [" + m_CurrentGame->GetGameName() + "]");
       delete m_CurrentGame;
       m_CurrentGame = nullptr;
 
